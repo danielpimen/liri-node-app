@@ -13,13 +13,69 @@ var command = process.argv[2];
 var argList = process.argv;
 var input = '';
 
+
+var writeToLog = function(data) {
+  fs.appendFile("random.txt", '\r\n\r\n');
+
+  fs.appendFile("random.txt", JSON.stringify(data), function(err) {
+    if (err) {
+      return console.log(err);
+    }
+
+    console.log("log.txt was updated!");
+  });
+}
+
+
+
+
+///////Get Song through Spotify
+let getSpotify = () => {
+	console.log(client);
+}
+
+
+////////Get Tweets
+let getTwitter = () => {
+	var params = {screen_name: 'node.js', count: 10};
+	client.get('statuses/user_timeline', params, function(error, tweets, response){
+
+		if (!error){
+			var data = [];
+			for (var i = 0; i < tweets.length; i++) {
+				data.push({
+					'tweet date: ' : tweets[i].created_at,
+					'Your Tweets: ' : tweets[i].text,
+
+
+				});
+			}
+			console.log('Hello');
+			writeToLog();
+		}
+	})
+
+}
+
+////////Get Movie Info
+let getMovie = () => {
+	console.log('Lets find this movie');
+}
+
+
+//////Do it function
+let doIt = () => {
+	console.log('You Lazy bitch');
+}
+
+///Switch for user input
 switch(command){
 	case 'my-tweets':
 		getTwitter();
 		break;
 
 	case 'spotify-this-song':
-		spotifySong();
+		getSpotify();
 		break;
 
 	case 'movie-this' :
@@ -34,17 +90,8 @@ switch(command){
 
 
 
-//Get Tweets
-var getTwitter = () => {
-	var paramaters = {screen_name: 'danielpimen92', count: 10};
-	client.get('statuses/user_timeline', paramaters, function(error, tweets, response){
 
-		if (!error){
-			var data = [];
-			for (var i = 0; i < tweets.length; i++) {
-				console.log(tweets[i]);
-			}
-		}
-	})
 
-}
+
+
+
