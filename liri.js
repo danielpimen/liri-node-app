@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+var util = require('util');
 var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require('request');
@@ -7,7 +8,7 @@ var fs = require('fs');
 var keys = require('./keys');
 
 var spotifyClient = new Spotify(keys.spotify);
-var client = new Twitter(keys.twitterKeys);
+var client = new Twitter(keys.twitter);
 
 var command = process.argv[2];
 var argList = process.argv;
@@ -15,15 +16,15 @@ var input = '';
 
 
 var writeToLog = function(data) {
-  fs.appendFile("random.txt", '\r\n\r\n');
+    fs.appendFile("random.txt", '\r\n\r\n');
 
-  fs.appendFile("random.txt", JSON.stringify(data), function(err) {
-    if (err) {
-      return console.log(err);
-    }
+    fs.appendFile("random.txt", JSON.stringify(data), function(err) {
+        if (err) {
+            return console.log(err);
+        }
 
-    console.log("log.txt was updated!");
-  });
+        console.log("log.txt was updated!");
+    });
 }
 
 
@@ -31,67 +32,64 @@ var writeToLog = function(data) {
 
 ///////Get Song through Spotify
 let getSpotify = () => {
-	console.log(client);
+    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+
+        console.log(data);
+    });
 }
 
 
 ////////Get Tweets
 let getTwitter = () => {
-	var params = {screen_name: 'node.js', count: 10};
-	client.get('statuses/user_timeline', params, function(error, tweets, response){
+    var params = { screen_name: 'katyperry', count: 10 };
+    client.get('search/tweets', { q: 'katyperry' }, function(error, tweets, response) {
+    	console.log(util.inspect(tweets, {depth: 2, colors: true}));
+    	let tweetsList = tweets.statuses
 
-		if (!error){
-			var data = [];
-			for (var i = 0; i < tweets.length; i++) {
-				data.push({
-					'tweet date: ' : tweets[i].created_at,
-					'Your Tweets: ' : tweets[i].text,
-
-
-				});
-			}
-			console.log('Hello');
-			writeToLog();
-		}
-	})
+        if (!error) {
+            var data = [];
+            for (var i = 0; i < tweetsList.length; i++) {
+                data.push({
+                    'Your Tweets: ': tweetsList[i].text
+                });
+            }
+            console.log(data);
+            writeToLog(data);
+        }
+    })
 
 }
 
 ////////Get Movie Info
 let getMovie = () => {
-	console.log('Lets find this movie');
+    console.log('Lets find this movie');
 }
 
 
 //////Do it function
 let doIt = () => {
-	console.log('You Lazy bitch');
+    console.log('You Lazy bitch');
 }
 
 ///Switch for user input
-switch(command){
-	case 'my-tweets':
-		getTwitter();
-		break;
+switch (command) {
+    case 'my-tweets':
+        getTwitter();
+        break;
 
-	case 'spotify-this-song':
-		getSpotify();
-		break;
+    case 'spotify-this-song':
+        getSpotify();
+        break;
 
-	case 'movie-this' :
-		getMovie();
-		break;
+    case 'movie-this':
+        getMovie();
+        break;
 
-	case 'do-what-it-says' :
-		doIt();
-		break;
+    case 'do-what-it-says':
+        doIt();
+        break;
 
 }
-
-
-
-
-
-
-
-
