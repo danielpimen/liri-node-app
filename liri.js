@@ -32,9 +32,17 @@ var writeToLog = function(data) {
 
 ///////Get Song through Spotify
 let getSpotify = () => {
-    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+    let songSearch = process.argv[3];
+    spotifyClient.search({ type: 'track', query: songSearch }, function(err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
+        }
+        let spotifyData = data;
+        var dataList = [];
+        for (var i = 0; i < spotifyData.length; i++) {
+            dataList.push({
+                'Songs: ': spotifyData[i]
+            });
         }
 
         console.log(data);
@@ -44,20 +52,19 @@ let getSpotify = () => {
 
 ////////Get Tweets
 let getTwitter = () => {
-    var params = { screen_name: 'katyperry', count: 10 };
-    client.get('search/tweets', { q: 'katyperry' }, function(error, tweets, response) {
-    	console.log(util.inspect(tweets, {depth: 2, colors: true}));
+    client.get('search/tweets', { q: 'danielpimen92' }, function(error, tweets, response) {
+    	util.inspect(tweets, {depth: 2, colors: true});
     	let tweetsList = tweets.statuses
 
         if (!error) {
             var data = [];
             for (var i = 0; i < tweetsList.length; i++) {
                 data.push({
-                    'Your Tweets: ': tweetsList[i].text
+                    'Tweets: ': tweetsList[i].text,
+                    'Made At' : tweetsList[i].created_at
                 });
             }
             console.log(data);
-            writeToLog(data);
         }
     })
 
