@@ -34,6 +34,7 @@ var writeToLog = function(data) {
 let getSpotify = () => {
     let songSearch = process.argv[3];
     spotifyClient.search({ type: 'track', query: songSearch }, function(err, data) {
+        util.inspect(data, { depth: 2, colors: true });
         if (err) {
             return console.log('Error occurred: ' + err);
         }
@@ -53,15 +54,15 @@ let getSpotify = () => {
 ////////Get Tweets
 let getTwitter = () => {
     client.get('search/tweets', { q: 'danielpimen92' }, function(error, tweets, response) {
-    	util.inspect(tweets, {depth: 2, colors: true});
-    	let tweetsList = tweets.statuses
+        util.inspect(tweets, { depth: 2, colors: true });
+        let tweetsList = tweets.statuses
 
         if (!error) {
             var data = [];
             for (var i = 0; i < tweetsList.length; i++) {
                 data.push({
                     'Tweets: ': tweetsList[i].text,
-                    'Made At' : tweetsList[i].created_at
+                    'Made At': tweetsList[i].created_at
                 });
             }
             console.log(data);
@@ -71,8 +72,29 @@ let getTwitter = () => {
 }
 
 ////////Get Movie Info
-let getMovie = () => {
-    console.log('Lets find this movie');
+let getMovie = (movie) => {
+    var search = process.argv[3];
+    console.log(search);
+    if (search === '') {
+        search = 'Mr. Nobody';
+    } else {
+        console.log('Lets find your movie');
+    }
+
+    search = search.split(' ').join('+');
+
+    var queryString = "https://www.omdbapi.com/?t=" + search + "&y=&plot=short&apikey=40e9cece";
+
+    request(queryString, function(error, response, body) {
+        var data = JSON.parse(body);
+        console.log('Title: ' + data.Title);
+        console.log('Year Released: ' + data.Released );
+        console.log('IMDB Rating: ' + data.imdbRating);
+        console.log('Language: ' + data.Language);
+        console.log('Country: ' + data.Country);
+        console.log('Actors: ' + data.Actors);
+        console.log('Plot: ' + data.Plot);
+    });
 }
 
 
