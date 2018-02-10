@@ -1,9 +1,5 @@
 /*PsuedoCode
-------1)Need to finish OMDB function(allow multiple movie search)
--------Need to create a loop that trims space in between query words
-------2)Fix DoIt function. Need to substitute text from random.txt into parameters
-------3)Spotify function - figure out why to parse through objects and pull data
-
+------Fix DoIt function. Need to substitute text from random.txt into parameters
 */
 
 require("dotenv").config();
@@ -41,20 +37,18 @@ var writeToLog = function(data) {
 ///////Get Song through Spotify
 let getSpotify = () => {
     let songSearch = process.argv[3];
-    spotifyClient.search({ type: 'track', query: songSearch }, function(err, data) {
+    spotifyClient.search({ type: 'track', query: songSearch, limit: 5 }, function(err, data) {
         util.inspect(data, { depth: 2, colors: true });
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        let spotifyData = data;
-        var dataList = [];
-        for (var i = 0; i < spotifyData.length; i++) {
-            dataList.push({
-                'Songs: ': spotifyData[i]
-            });
-        }
+        //console.log(data.tracks);
+        let songInfo = data.tracks.items[0];
+        console.log(songInfo.artists[0].name);
+        console.log(songInfo.name);
+        console.log(songInfo.external_urls);
+        console.log(songInfo.type)
 
-        console.log(data);
     });
 }
 
