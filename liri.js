@@ -1,10 +1,10 @@
-/*Need to finish OMDB function(allow multiple movie search)
- *Spotify function neeeds works 
+/*PsuedoCode
+------1)Need to finish OMDB function(allow multiple movie search)
+-------Need to create a loop that trims space in between query words
+------2)Fix DoIt function. Need to substitute text from random.txt into parameters
+------3)Spotify function - figure out why to parse through objects and pull data
+
 */
-
-
-
-
 
 require("dotenv").config();
 
@@ -116,8 +116,10 @@ let doIt = () => {
         }else{
             console.log(data);
             let split = data.split(', ');
-            console.log(split);
-            let 
+            let command1 = split[0].trim();
+            let parameter =split[1].trim();
+            getSpotify()
+
         }
     } )
 }
