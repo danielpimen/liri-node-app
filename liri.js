@@ -1,3 +1,11 @@
+/*Need to finish OMDB function(allow multiple movie search)
+ *Spotify function neeeds works 
+*/
+
+
+
+
+
 require("dotenv").config();
 
 var util = require('util');
@@ -71,9 +79,10 @@ let getTwitter = () => {
 
 }
 
+
 ////////Get Movie Info
 let getMovie = (movie) => {
-    var search = process.argv[3];
+    let search = process.argv[3];
     console.log(search);
     if (search === '') {
         search = 'Mr. Nobody';
@@ -86,7 +95,7 @@ let getMovie = (movie) => {
     var queryString = "https://www.omdbapi.com/?t=" + search + "&y=&plot=short&apikey=40e9cece";
 
     request(queryString, function(error, response, body) {
-        var data = JSON.parse(body);
+        let data = JSON.parse(body);
         console.log('Title: ' + data.Title);
         console.log('Year Released: ' + data.Released );
         console.log('IMDB Rating: ' + data.imdbRating);
@@ -100,7 +109,17 @@ let getMovie = (movie) => {
 
 //////Do it function
 let doIt = () => {
-    console.log('You Lazy bitch');
+    fs.readFile('./random.txt', 'utf8', function(error, data){
+        if (error){
+            console.log(error);
+            return;
+        }else{
+            console.log(data);
+            let split = data.split(', ');
+            console.log(split);
+            let 
+        }
+    } )
 }
 
 ///Switch for user input
@@ -122,3 +141,4 @@ switch (command) {
         break;
 
 }
+
